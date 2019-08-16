@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Alex Crichton <alex@alexcrichton.com>"]
 edition = "2018"
 readme = "README.md"
-repository = 'https://github.com/alexcrichton/wasmtime-bindings-demo'
+repository = 'https://github.com/alexcrichton/wasm-interface-types-polyfill'
 license = 'MIT/Apache-2.0'
 description = '''
 A polyfill for the upcoming WebAssembly interface types proposal powered by the

@@ -27,7 +27,7 @@ jobs:
       working-directory: loader
     - run: |
         npm install -g github-release-cli
-        git -c http.extraheader="AUTHORIZATION: basic ***" push origin :dev
+        git -c http.extraheader="AUTHORIZATION: basic ${{ secrets.github_token }}" push origin :dev
         github-release delete \
           --token ${{ secrets.github_token }} \
           --owner ${{ github.event.repository.owner.name }} \

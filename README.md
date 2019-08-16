@@ -7,6 +7,37 @@ purpose of this package is to provide a polyfill for [WebAssembly
 Interface Types](https://github.com/webassembly/webidl-bindings) to be usable in
 JS.
 
+## Using this module
+
+A pre-built version of this module can be installed with
+
+```
+$ npm install wasm-interface-types
+```
+
+This module is intended to be consumed by Node.js. Versions that run in a
+browser are not compiled yet.
+
+Example usage looks like:
+
+```js
+const wit = require('wasm-interface-types');
+
+async function run(wasmBytes) {
+    // You can either execute the module directly in Node.js...
+    const module = await wit.process(wasmBytes, /* esm =*/ false);
+    module.exported_function();
+
+    // ... or you can compile it and inspect the JS/wasm
+    const result = await wit.compile(wasmBytes, /* esm =*/ true);
+    console.log(result.js());
+    console.log(result.wasm());
+}
+
+const wasmBytes = [ /* ... */ ];
+run(wasmBytes);
+```
+
 ## Building the module
 
 The module can be built with

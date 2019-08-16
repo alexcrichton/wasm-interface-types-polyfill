@@ -7,10 +7,10 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@master
-    - name: Install Rust
-      run: |
-        curl https://sh.rustup.rs | sh -s -- -y
-        echo "##[add-path]$HOME/.cargo/bin"
+    # - name: Install Rust
+    #   run: |
+    #     curl https://sh.rustup.rs | sh -s -- -y
+    #     echo "##[add-path]$HOME/.cargo/bin"
     - name: Install wasm-pack
       run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -f
     - uses: actions/setup-node@v1
@@ -27,11 +27,12 @@ jobs:
       working-directory: loader
     - run: |
         curl -X DELETE https://api.github.com/repos/${{ github.repository }}/releases/dev?access_token=${{ secrets.github_token }}
-        curl --data '{"tag_name": "dev","target_commitish": "master","name": "dev","body": "CI Release","draft": false,"prerelease": true}' https://api.github.com/repos/${{ github.repository }}/releases?access_token=${{ secrets.github_token }}
+        curl --data '{"tag_name": "dev","target_commitish": "master","name": "Latest CI Build","body": "Automatic publish from CI","draft": false,"prerelease": true}' https://api.github.com/repos/${{ github.repository }}/releases?access_token=${{ secrets.github_token }}
         name=$(ls | grep tgz)
         curl -X POST -H "Content-Type: application/octet-stream" -d @$name https://api.github.com/repos/${{ github.repository }}/releases/dev/assets?name=$name&access_token=${{ secrets.github_token }}
       if: github.ref == 'refs/heads/master'
       working-directory: loader
+      name: Publish master to github dev release
 
 
   # loader:

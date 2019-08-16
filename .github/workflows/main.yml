@@ -11,8 +11,8 @@ jobs:
     #   run: |
     #     curl https://sh.rustup.rs | sh -s -- -y
     #     echo "##[add-path]$HOME/.cargo/bin"
-    - name: Install wasm-pack
-      run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -f
+    # - name: Install wasm-pack
+    #   run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -f
     - uses: actions/setup-node@v1
       with:
         node-version: 12

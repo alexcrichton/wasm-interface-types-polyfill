@@ -17,23 +17,36 @@ jobs:
       with:
         node-version: 12
         registry-url: https://registry.npmjs.org/
-    - run: wasm-pack build
-    - run: cd pkg && npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-      if: startsWith(github.ref, 'refs/tags/')
+    # - run: wasm-pack build
+    # - run: npm publish
+    #   if: startsWith(github.ref, 'refs/tags/')
+    #   working-directory: pkg
+    #   env:
+    #     NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+    - run: npm pack
+      working-directory: loader
+    - run: |
+        curl -X DELETE https://api.github.com/repos/${{ github.repository }}/releases/dev?access_token=${{ secrets.github_token }}
+        curl --data '{"tag_name": "dev","target_commitish": "master","name": "dev","body": "CI Release","draft": false,"prerelease": true}' https://api.github.com/repos/${{ github.repository }}/releases?access_token=${{ secrets.github_token }}
+        name=$(ls | grep tgz)
+        curl -X POST -H "Content-Type: application/octet-stream" -d @$name https://api.github.com/repos/${{ github.repository }}/releases/dev/assets?name=$name&access_token=${{ secrets.github_token }}
+      if: github.ref == 'refs/heads/master'
+      working-directory: loader
 
 
-  loader:
-    name: Build wasm-interface-types-loader
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: 12
-        registry-url: https://registry.npmjs.org/
-    - run: cd loader && npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-      if: startsWith(github.ref, 'refs/tags/')
+  # loader:
+  #   name: Build wasm-interface-types-loader
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v1
+  #   - uses: actions/setup-node@v1
+  #     with:
+  #       node-version: 12
+  #       registry-url: https://registry.npmjs.org/
+  #   - run: npm publish
+  #     if: startsWith(github.ref, 'refs/tags/')
+  #     working-directory: loader
+  #     env:
+  #       NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+  #   - run: npm pack
+  #     working-directory: loader

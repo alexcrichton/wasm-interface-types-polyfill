@@ -27,29 +27,29 @@ jobs:
         registry-url: https://registry.npmjs.org/
     - run: wasm-pack build
 
-    # Publish to github releases on each commit to master
-    - run: |
-        (cd loader && npm pack)
-        (cd pkg && npm pack)
-        curl -X DELETE https://api.github.com/repos/${{ github.repository }}/git/refs/tags/dev?access_token=${{ secrets.github_token }}
-        npm install -g github-release-cli
-        github-release delete \
-          --token ${{ secrets.github_token }} \
-          --owner ${{ github.event.repository.owner.name }} \
-          --repo ${{ github.event.repository.name }} \
-          --tag "dev"
-        github-release upload \
-          --token ${{ secrets.github_token }} \
-          --owner ${{ github.event.repository.owner.name }} \
-          --repo ${{ github.event.repository.name }} \
-          --tag "dev" \
-          --name "Latest CI Build" \
-          --body "Automatic publish from CI" \
-          --prerelease=true \
-          pkg/*.tgz \
-          loader/*.tgz
-      if: github.ref == 'refs/heads/master'
-      name: Publish master to github dev release
+    # # Publish to github releases on each commit to master
+    # - run: |
+    #     (cd loader && npm pack)
+    #     (cd pkg && npm pack)
+    #     curl -X DELETE https://api.github.com/repos/${{ github.repository }}/git/refs/tags/dev?access_token=${{ secrets.github_token }}
+    #     npm install -g github-release-cli
+    #     github-release delete \
+    #       --token ${{ secrets.github_token }} \
+    #       --owner ${{ github.event.repository.owner.name }} \
+    #       --repo ${{ github.event.repository.name }} \
+    #       --tag "dev"
+    #     github-release upload \
+    #       --token ${{ secrets.github_token }} \
+    #       --owner ${{ github.event.repository.owner.name }} \
+    #       --repo ${{ github.event.repository.name }} \
+    #       --tag "dev" \
+    #       --name "Latest CI Build" \
+    #       --body "Automatic publish from CI" \
+    #       --prerelease=true \
+    #       pkg/*.tgz \
+    #       loader/*.tgz
+    #   if: github.ref == 'refs/heads/master'
+    #   name: Publish master to github dev release
 
     # Publish to NPM  on tags
     - run: |

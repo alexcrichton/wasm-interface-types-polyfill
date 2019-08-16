@@ -26,12 +26,21 @@ jobs:
     - run: npm pack
       working-directory: loader
     - run: |
-        curl -X DELETE https://api.github.com/repos/${{ github.repository }}/releases/dev?access_token=${{ secrets.github_token }}
-        curl --data '{"tag_name": "dev","target_commitish": "master","name": "Latest CI Build","body": "Automatic publish from CI","draft": false,"prerelease": true}' https://api.github.com/repos/${{ github.repository }}/releases?access_token=${{ secrets.github_token }}
-        name=$(ls | grep tgz)
-        curl -X POST -H "Content-Type: application/octet-stream" -d @$name https://api.github.com/repos/${{ github.repository }}/releases/dev/assets?name=$name&access_token=${{ secrets.github_token }}
+        npm install -g github-release-cli
+        github-release delete \
+          --token ${{ secrets.npm_token }} \
+          --owner ${{ github.repository.owner.name }} \
+          --repo ${{ github.repository.name }} \
+          --tag "dev"
+        github-release upload \
+          --token ${{ secrets.npm_token }} \
+          --owner ${{ github.repository.owner.name }} \
+          --repo ${{ github.repository.name }} \
+          --tag "dev" \
+          --name "Latest CI Build" \
+          --body "Automatic publish from CI" \
+          loader/*.tgz
       if: github.ref == 'refs/heads/master'
-      working-directory: loader
       name: Publish master to github dev release
 
 

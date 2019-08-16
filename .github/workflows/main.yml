@@ -26,15 +26,14 @@ jobs:
     - run: npm pack
       working-directory: loader
     - run: |
-        set -ex
         npm install -g github-release-cli
         github-release delete \
-          --token ${{ secrets.npm_token }} \
+          --token ${{ secrets.github_token }} \
           --owner ${{ github.event.repository.owner.name }} \
           --repo ${{ github.event.repository.name }} \
           --tag "dev"
         github-release upload \
-          --token ${{ secrets.npm_token }} \
+          --token ${{ secrets.github_token }} \
           --owner ${{ github.event.repository.owner.name }} \
           --repo ${{ github.event.repository.name }} \
           --tag "dev" \

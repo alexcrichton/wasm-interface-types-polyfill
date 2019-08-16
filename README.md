@@ -29,7 +29,7 @@ async function run(wasmBytes) {
     module.exported_function();
 
     // ... or you can compile it and inspect the JS/wasm
-    const result = await wit.compile(wasmBytes, /* esm =*/ true);
+    const result = wit.compile(wasmBytes, /* esm =*/ true);
     console.log(result.js());
     console.log(result.wasm());
 }

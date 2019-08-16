@@ -1,19 +1,35 @@
-# `wasm-bindings` NPM module
+# `wasm-interface-types` NPM module
 
-This directory contains the `wasm-bindings` NPM module. This NPM module is
-written in Rust and compiled to WebAssembly using `wasm-pack`. The purpose of
-this package is to provide a polyfill for [WebAssembly
-bindings](https://github.com/webassembly/webidl-bindings) usable in JS.
+This repository contains the `wasm-interface-types` NPM module. This NPM module
+is written in Rust and compiled to WebAssembly using [`wasm-pack`](curl
+https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -f). The
+purpose of this package is to provide a polyfill for [WebAssembly
+Interface Types](https://github.com/webassembly/webidl-bindings) to be usable in
+JS.
 
-This module is consumed by the Node and Web examples of this repository.
+## Building the module
 
-If you're curious about how this is implemented, it:
+The module can be built with
 
-* Uses `wasm-pack`
-* ... to use the `wasm-bindgen` CLI tool
-* ... to export a Rust crate to JS by compiling to WebAssembly
-* ... which links to the `wasm-bindgen-cli-support` library that `wasm-bindgen`
-  itself uses
+```
+$ wasm-pack build
+```
 
-In other words this NPM module uses `wasm-bindgen` to compile `wasm-bindgen` to
-consume `wasm-bindgen`-compiled modules. Yo dawg...
+and the `pkg` directory will have the NPM module to publish
+
+# License
+
+This project is licensed under either of
+
+ * Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or
+   http://www.apache.org/licenses/LICENSE-2.0)
+ * MIT license ([LICENSE-MIT](LICENSE-MIT) or
+   http://opensource.org/licenses/MIT)
+
+at your option.
+
+### Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in this project by you, as defined in the Apache-2.0 license,
+shall be dual licensed as above, without any additional terms or conditions.

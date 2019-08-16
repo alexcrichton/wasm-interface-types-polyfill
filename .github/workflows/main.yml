@@ -36,6 +36,11 @@ jobs:
     - run: |
         npm install -g github-release-cli
         curl -X DELETE https://api.github.com/repos/${{ github.repository }}/git/refs/tags/dev?access_token=${{ secrets.github_token }}
+        github-release delete \
+          --token ${{ secrets.github_token }} \
+          --owner ${{ github.event.repository.owner.name }} \
+          --repo ${{ github.event.repository.name }} \
+          --tag "dev"
         github-release upload \
           --token ${{ secrets.github_token }} \
           --owner ${{ github.event.repository.owner.name }} \

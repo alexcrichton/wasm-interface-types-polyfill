@@ -26,16 +26,17 @@ jobs:
     - run: npm pack
       working-directory: loader
     - run: |
+        set -ex
         npm install -g github-release-cli
         github-release delete \
           --token ${{ secrets.npm_token }} \
-          --owner ${{ github.repository.owner.name }} \
-          --repo ${{ github.repository.name }} \
+          --owner ${{ github.event.repository.owner.name }} \
+          --repo ${{ github.event.repository.name }} \
           --tag "dev"
         github-release upload \
           --token ${{ secrets.npm_token }} \
-          --owner ${{ github.repository.owner.name }} \
-          --repo ${{ github.repository.name }} \
+          --owner ${{ github.event.repository.owner.name }} \
+          --repo ${{ github.event.repository.name }} \
           --tag "dev" \
           --name "Latest CI Build" \
           --body "Automatic publish from CI" \

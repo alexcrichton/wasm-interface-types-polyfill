@@ -1,0 +1,11 @@
+{
+    "name": "wasm-interface-types-loader",
+    "version": "0.1.0",
+    "description": "WebAssembly interface types loader",
+    "author": "Alex Crichton <alex@alexcrichton.com>",
+    "license": "MIT/Apache-2.0",
+    "main": "index.js",
+    "dependencies": {
+        "wasm-interface-types": "^0.1.0"
+    }
+}

@@ -15,27 +15,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    # - name: Install Rust
-    #   run: |
-    #     curl https://sh.rustup.rs | sh -s -- -y
-    #     echo "##[add-path]$HOME/.cargo/bin"
-    # - name: Install wasm-pack
-    #   run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -f
+    - name: Install Rust
+      run: |
+        curl https://sh.rustup.rs | sh -s -- -y
+        echo "##[add-path]$HOME/.cargo/bin"
+    - name: Install wasm-pack
+      run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -f
     - uses: actions/setup-node@v1
       with:
         node-version: 12
         registry-url: https://registry.npmjs.org/
-    # - run: wasm-pack build
-    # - run: npm publish
-    #   if: startsWith(github.ref, 'refs/tags/')
-    #   working-directory: pkg
-    #   env:
-    #     NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-    - run: npm pack
-      working-directory: loader
+    - run: wasm-pack build
+
+    # Publish to github releases on each commit to master
     - run: |
-        npm install -g github-release-cli
+        (cd loader && npm pack)
+        (cd pkg && npm pack)
         curl -X DELETE https://api.github.com/repos/${{ github.repository }}/git/refs/tags/dev?access_token=${{ secrets.github_token }}
+        npm install -g github-release-cli
         github-release delete \
           --token ${{ secrets.github_token }} \
           --owner ${{ github.event.repository.owner.name }} \
@@ -52,20 +49,11 @@ jobs:
       if: github.ref == 'refs/heads/master'
       name: Publish master to github dev release
 
-
-  # loader:
-  #   name: Build wasm-interface-types-loader
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v1
-  #   - uses: actions/setup-node@v1
-  #     with:
-  #       node-version: 12
-  #       registry-url: https://registry.npmjs.org/
-  #   - run: npm publish
-  #     if: startsWith(github.ref, 'refs/tags/')
-  #     working-directory: loader
-  #     env:
-  #       NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-  #   - run: npm pack
-  #     working-directory: loader
+    # Publish to NPM  on tags
+    - run: |
+        (cd pkg && npm publish)
+        (cd loader && npm publish)
+      name: Publish to NPM
+      if: startsWith(github.ref, 'refs/tags/')
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.npm_token }}

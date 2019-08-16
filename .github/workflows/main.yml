@@ -2,8 +2,8 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  test:
-    name: Build
+  build:
+    name: Build wasm-interface-types
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@master
@@ -13,10 +13,19 @@ jobs:
         echo "##[add-path]$HOME/.cargo/bin"
     - name: Install wasm-pack
       run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -f
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+        registry-url: https://registry.npmjs.org/
     - run: wasm-pack build
+    - run: cd pkg && npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      if: startsWith(github.ref, 'refs/tags/')
 
 
-  publish-npm:
+  loader:
+    name: Build wasm-interface-types-loader
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -24,30 +33,7 @@ jobs:
       with:
         node-version: 12
         registry-url: https://registry.npmjs.org/
-    - name: Dump GitHub context
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: echo "$GITHUB_CONTEXT"
-    - name: Dump strategy context
-      env:
-        STRATEGY_CONTEXT: ${{ toJson(strategy) }}
-      run: echo "$STRATEGY_CONTEXT"
-    - name: Dump matrix context
-      env:
-        MATRIX_CONTEXT: ${{ toJson(matrix) }}
-      run: echo "$MATRIX_CONTEXT"
-    - name: Dump job context
-      env:
-        JOB_CONTEXT: ${{ toJson(job) }}
-      run: echo "$JOB_CONTEXT"
-    - name: Dump runner context
-      env:
-        RUNNER_CONTEXT: ${{ toJson(runner) }}
-      run: echo "$RUNNER_CONTEXT"
-    - name: Dump steps context
-      env:
-        STEPS_CONTEXT: ${{ toJson(steps) }}
-      run: echo "$STEPS_CONTEXT"
     - run: cd loader && npm publish
       env:
         NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      if: startsWith(github.ref, 'refs/tags/')

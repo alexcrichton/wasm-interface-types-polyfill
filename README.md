@@ -1,8 +1,8 @@
 # `wasm-interface-types` NPM module
 
 This repository contains the `wasm-interface-types` NPM module. This NPM module
-is written in Rust and compiled to WebAssembly using [`wasm-pack`](curl
-https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -f). The
+is written in Rust and compiled to WebAssembly using
+[`wasm-pack`](https://github.com/rustwasm/wasm-pack). The
 purpose of this package is to provide a polyfill for [WebAssembly
 Interface Types](https://github.com/webassembly/webidl-bindings) to be usable in
 JS.

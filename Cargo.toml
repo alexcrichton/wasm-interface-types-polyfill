@@ -1,0 +1,29 @@
+[package]
+name = "wasm-interface-types"
+version = "0.1.0"
+authors = ["Alex Crichton <alex@alexcrichton.com>"]
+edition = "2018"
+readme = "README.md"
+repository = 'https://github.com/alexcrichton/wasmtime-bindings-demo'
+license = 'MIT/Apache-2.0'
+description = '''
+A polyfill for the upcoming WebAssembly interface types proposal powered by the
+`wasm-bindgen` tool compiled to WebAssembly.
+'''
+
+[dependencies]
+console_error_panic_hook = "0.1"
+failure = "0.1"
+futures = "0.1"
+js-sys = "0.3.25"
+walrus = "0.11"
+wasm-bindgen = "0.2.48"
+wasm-bindgen-cli-support = "0.2.48"
+wasm-bindgen-futures = "0.3.25"
+wasm-webidl-bindings = "0.4"
+
+# Required to get this working for now, need to go report an upstream bug...
+getrandom = { version = "0.1.9", features = ['wasm-bindgen'] }
+
+[lib]
+crate-type = ['cdylib']

@@ -45,7 +45,7 @@ jobs:
           --tag "dev" \
           --name "Latest CI Build" \
           --body "Automatic publish from CI" \
-          --prerelease \
+          --prerelease=true \
           pkg/*.tgz \
           loader/*.tgz
       if: github.ref == 'refs/heads/master'

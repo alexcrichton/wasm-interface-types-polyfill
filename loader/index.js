@@ -12,7 +12,7 @@ async function run(cx, source) {
   const ret = await wasm_interface_types.compile(name, source, true);
   // TODO: should figure out how to not need to write to the actual filesystem
   // here.
-  await writeFileAsync(name + '_bg.wasm', ret.wasm());
+  await writeFileAsync(path.resolve(path.dirname(cx.resourcePath), name + '_bg.wasm'), ret.wasm());
   return ret.js();
 }
 

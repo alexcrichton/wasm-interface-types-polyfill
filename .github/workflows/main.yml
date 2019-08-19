@@ -25,7 +25,7 @@ jobs:
       with:
         node-version: 12
         registry-url: https://registry.npmjs.org/
-    - run: wasm-pack build
+    - run: wasm-pack build --target nodejs
 
     # # Publish to github releases on each commit to master
     # - run: |

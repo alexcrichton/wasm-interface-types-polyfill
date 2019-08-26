@@ -10,7 +10,7 @@ Types](https://github.com/webassembly/webidl-bindings).
 First, you'll need to install this package with:
 
 ```
-$ npm intsall wasm-interface-types-loader
+$ npm install wasm-interface-types-loader
 ```
 
 Next you'll want to add this to your `webpack.config.js`:

@@ -444,7 +444,7 @@ dependencies = [
 
 [[package]]
 name = "wasm-interface-types"
-version = "0.1.2"
+version = "0.1.3"
 dependencies = [
  "anyhow 1.0.22 (registry+https://github.com/rust-lang/crates.io-index)",
  "console_error_panic_hook 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",

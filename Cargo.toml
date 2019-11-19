@@ -13,14 +13,14 @@ A polyfill for the upcoming WebAssembly interface types proposal powered by the
 
 [dependencies]
 console_error_panic_hook = "0.1"
-failure = "0.1"
+anyhow = "1.0"
 futures = "0.1"
 js-sys = "0.3.25"
-walrus = "0.11"
-wasm-bindgen = "0.2.50"
-wasm-bindgen-cli-support = "0.2.50"
+walrus = "0.13"
+wasm-bindgen = "0.2.55"
+wasm-bindgen-cli-support = "0.2.55"
 wasm-bindgen-futures = "0.3.25"
-wasm-webidl-bindings = "0.4"
+wasm-webidl-bindings = "0.6"
 
 # Required to get this working for now, need to go report an upstream bug...
 getrandom = { version = "0.1.9", features = ['wasm-bindgen'] }

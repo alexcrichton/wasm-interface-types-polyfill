@@ -17,7 +17,7 @@ pub fn process(wasm_bytes: &[u8], esm: bool) -> js_sys::Promise {
 }
 
 fn _process(wasm_bytes: &[u8], esm: bool) -> Result<js_sys::Promise, JsValue> {
-    let output = compile("wasm", wasm_bytes, esm)?;
+    let mut output = compile("wasm", wasm_bytes, esm)?;
     let js = format!("const self = {{}}; {}\n return self;", output.output.js());
     let function = js_sys::Function::new_no_args(&js);
     let js_self = function.call0(&JsValue::undefined())?;
@@ -40,7 +40,7 @@ pub fn compile(name: &str, wasm_bytes: &[u8], esm: bool) -> Result<Output, JsVal
     _compile(name, wasm_bytes, esm).map_err(|e| JsValue::from(format!("{:?}", e)))
 }
 
-fn _compile(name: &str, wasm: &[u8], esm: bool) -> Result<Output, failure::Error> {
+fn _compile(name: &str, wasm: &[u8], esm: bool) -> anyhow::Result<Output> {
     console_error_panic_hook::set_once();
 
     let module = walrus::ModuleConfig::new()
@@ -64,10 +64,7 @@ impl Output {
         self.output.js().to_string()
     }
 
-    pub fn wasm(&self) -> Result<Vec<u8>, JsValue> {
-        self.output
-            .wasm()
-            .emit_wasm()
-            .map_err(|e| JsValue::from(format!("{:?}", e)))
+    pub fn wasm(&mut self) -> Result<Vec<u8>, JsValue> {
+        Ok(self.output.wasm_mut().emit_wasm())
     }
 }
